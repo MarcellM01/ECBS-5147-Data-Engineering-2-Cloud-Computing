@@ -31,6 +31,9 @@ def get_encrypted_password_for_user(df: dict, user_name: str) -> Optional[str]:
     """
     if user_name not in df:
         return None
+    
+    # This is a dictionary that is why we are getting the 'user_name', it will return 
+    # its value pait the password.
 
     return df[user_name]
 

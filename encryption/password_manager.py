@@ -1,4 +1,7 @@
 from typing import Any, Optional
+import hashlib
+
+# 's' is a string and the function returns a string
 
 
 def encrypt(s: str) -> str:
@@ -8,7 +11,8 @@ def encrypt(s: str) -> str:
     @param s: string to encrypt
     @return: the SHA256 hexdigest value of `s`
     """
-    pass
+
+    return hashlib.sha256(s.encode()).hexdigest()
 
 
 def init_table() -> None:
@@ -16,10 +20,11 @@ def init_table() -> None:
     Returns empty dataframe
     @return: An empty dataframe with these columns: 'user_name' and 'password'
     """
-    pass
+
+    return {}
 
 
-def get_encrypted_password_for_user(user_name: str) -> Optional[str]:
+def get_encrypted_password_for_user(df, user_name: str) -> Optional[str]:
     """
     Returns the encrypted password of a user.
     If no user with the specified `user_name` exists, return None
@@ -27,7 +32,10 @@ def get_encrypted_password_for_user(user_name: str) -> Optional[str]:
     @param user_name: the username
     @return: the encrypted password of the user
     """
-    pass
+    for user in df:
+        if user['user_name'] == user_name:
+            return user['password']
+    return None
 
 
 def add_or_update_user(df: Any, user_name: str, password: str) -> Any:
@@ -42,7 +50,16 @@ def add_or_update_user(df: Any, user_name: str, password: str) -> Any:
 
     @return: the dataframe with the new user added or the password updated
     """
-    pass
+    # Check if the user already exists
+    for user in df:
+        if user['user_name'] == user_name:
+            user['password'] = password  # Update existing user's password
+            return df
+
+    # If user does not exist, add a new user
+    df.append({'user_name': user_name, 'password': password})
+
+    return df
 
 
 def authenticate_user(df: Any, user_name: str, password: str) -> bool:
@@ -55,7 +72,10 @@ def authenticate_user(df: Any, user_name: str, password: str) -> bool:
 
     @return: True if the user exists and the password matches, False otherwise
     """
-    pass
+    for user in df:
+        if user['user_name'] == user_name and user['password'] == password:
+            return True
+    return False
 
 
 if __name__ == "__main__":
